@@ -21,12 +21,23 @@ const SideBar = () => {
 
 export default SideBar;
 
-
 const SidebarContainer = styled.div`
     width: 15%;
     background-color: #f4f4f4;
     padding: 20px;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.7);
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.7);
+    transition: width 0.3s;
+
+    @media (max-width: 768px) {
+        width: 20%; 
+        padding: 15px; 
+    }
+
+    @media (max-width: 480px) {
+        width: 100%; 
+        padding: 10px; 
+        box-shadow: none; 
+    }
 `;
 
 const Button = styled.button`
@@ -43,5 +54,14 @@ const Button = styled.button`
 
     &:hover {
         background-color: #0056b3;
+    }
+
+    @media (max-width: 768px) {
+        width: 70%; 
+    }
+
+    @media (max-width: 480px) {
+        width: 100%; 
+        padding: 8px; 
     }
 `;

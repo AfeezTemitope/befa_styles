@@ -1,13 +1,17 @@
 import React from 'react';
 import LandingPage from './Pages/LandingPage';
-import { BrowserRouter as Router } from 'react-router-dom';
+import PlFixtures from './components/PlFixtures';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 
 const App = () => {
   return (
     <AppContainer>
       <Router>
-        <LandingPage />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/pl-matches" element={<PlFixtures />} />
+        </Routes> 
       </Router>
     </AppContainer>
   );
