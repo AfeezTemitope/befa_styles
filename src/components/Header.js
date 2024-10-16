@@ -106,6 +106,16 @@ const Hamburger = styled.div`
   cursor: pointer; 
   padding: 5px; 
   position: relative; 
+
+  @media (max-width: 768px) {
+    font-size: 20px; 
+    padding: 8px;    
+  }
+
+  @media (max-width: 480px) {
+    font-size: 18px; 
+    padding: 10px;   
+  }
 `;
 
 const DropdownContainer = styled.div`

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-const apiKey = '4465a3968bbf43aebcbd75f859f16028'; 
+const apiKey = process.env.REACT_APP_NEWS_API; 
+console.log(apiKey)
 
 const SportNews = () => {
   const [newsArticles, setNewsArticles] = useState([]);
@@ -40,7 +41,7 @@ const SportNews = () => {
   }, []);
 
   const loadMore = () => {
-    setVisibleCount((prevCount) => prevCount + 6); // Load 6 more articles
+    setVisibleCount((prevCount) => prevCount + 6); 
   };
 
   if (loading) return <p>Loading news...</p>;
@@ -48,7 +49,7 @@ const SportNews = () => {
 
   return (
 <div>
-    <StyledHeading>---------------------- Trending Naija Sports News -------------------</StyledHeading>
+    <StyledHeading>------------- Trending Naija Sports News ------------</StyledHeading>
     <NewsContainer>
         {newsArticles.slice(0, visibleCount).map((article, index) => (
             <Article key={index}>

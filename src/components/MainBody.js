@@ -47,7 +47,12 @@ const Container = styled.div`
     border: 1px solid #ccc; 
     border-radius: 5px; 
     box-shadow: 0 2px 5px rgba(177, 175, 175, 0.5);
-    max-height: 450px
+    max-height: 450px;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        max-height: none;
+    }
 `;
 
 const Half = styled.div`
@@ -55,7 +60,7 @@ const Half = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 5px; /* Adjusted margin */
+    margin: 5px; 
     box-sizing: border-box; 
     min-height: 0;
     border: 1px solid #ccc; 
@@ -64,6 +69,7 @@ const Half = styled.div`
     
     @media (max-width: 768px) {
         min-height: 200px; 
+        flex: 0 0 100%; 
     }
 
     @media (max-width: 480px) {
