@@ -1,0 +1,139 @@
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
+
+const apiKey = '4465a3968bbf43aebcbd75f859f16028'; 
+
+const SportNews = () => {
+  const [newsArticles, setNewsArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(6); 
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const response = await axios.get('https://newsapi.org/v2/everything', {
+          params: {
+            q: 'Nigeria League',
+            language: 'en',
+            sortBy: 'publishedAt',
+            apiKey: apiKey,
+            pageSize: 100, 
+          },
+        });
+
+        if (response.data.articles) {
+          setNewsArticles(response.data.articles);
+        } else {
+          throw new Error('No results found');
+        }
+      } catch (err) {
+        console.error('Error fetching news:', err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, []);
+
+  const loadMore = () => {
+    setVisibleCount((prevCount) => prevCount + 6); // Load 6 more articles
+  };
+
+  if (loading) return <p>Loading news...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  return (
+<div>
+    <StyledHeading>---------------------- Trending Naija Sports News -------------------</StyledHeading>
+    <NewsContainer>
+        {newsArticles.slice(0, visibleCount).map((article, index) => (
+            <Article key={index}>
+                {article.urlToImage && <Image src={article.urlToImage} alt={article.title} />}
+                <h2>{article.title}</h2>
+                <p>{article.description}</p>
+                <a href={article.url} target="_blank" rel="noopener noreferrer">Read more</a>
+            </Article>
+        ))}
+    </NewsContainer>
+    {visibleCount < newsArticles.length && (
+        <LoadMoreButton onClick={loadMore}>Load More</LoadMoreButton>
+    )}
+</div>
+
+  );
+};
+
+export default SportNews;
+
+const NewsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; 
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    gap: 15px;
+  }
+
+  @media (max-width: 480px) {
+    gap: 10px;
+  }
+`;
+
+const Article = styled.div`
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: calc(33.33% - 20px); 
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    width: calc(50% - 15px);
+  }
+
+  @media (max-width: 480px) {
+    width: 100%; 
+  }
+`;
+
+const Image = styled.img`
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 10px;
+`;
+
+const LoadMoreButton = styled.button`
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+const StyledHeading = styled.h3`
+    text-align: center; 
+    width: 70%;
+    margin: 20px auto; 
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2c3e50; 
+    padding: 10px; 
+    background-color: #ecf0f1; 
+    border-radius: 5px; 
+    box-shadow: 0 2px 5px rgba(0, 128, 0, 0.3);
+`;
+
+
