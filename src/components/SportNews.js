@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 const apiKey = process.env.REACT_APP_NEWS_API; 
-console.log(apiKey)
+
 
 const SportNews = () => {
   const [newsArticles, setNewsArticles] = useState([]);

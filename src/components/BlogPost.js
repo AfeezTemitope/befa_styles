@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 
 
-console.log('Environment variables:', process.env);
+
 
 const AdminDashboard = () => {
   
