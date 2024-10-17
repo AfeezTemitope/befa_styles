@@ -9,9 +9,14 @@ const PlFixtures = () => {
   useEffect(() => {
     const fetchFixtures = async () => {
       try {
-        const response = await axios.get('https://fantasy.premierleague.com/api/fixtures/');
-        setFixtures(response.data);
-        console.log(response); // Assuming response.data is the correct format
+        const response = await axios.get('http://localhost:5000/api/fixtures'); 
+        const now = new Date();
+
+     
+        const upcomingFixtures = response.data.filter(fixture => new Date(fixture.date) > now);
+
+        setFixtures(upcomingFixtures);
+        console.log(upcomingFixtures); 
       } catch (error) {
         console.error('Error fetching fixtures:', error);
         setError('Failed to fetch fixtures. Please try again later.');
@@ -27,11 +32,24 @@ const PlFixtures = () => {
 
   return (
     <FixturesContainer>
-      <h1>Fixtures</h1>
+      <h1>Upcoming Fixtures</h1>
       <ul>
         {fixtures.map(fixture => (
           <FixtureItem key={fixture.id}>
-            {fixture.team_a} vs {fixture.team_h} - {new Date(fixture.date).toLocaleString()}
+            <MatchContainer>
+              <TeamContainer>
+                <Logo src={fixture.team_a_logo} alt={`${fixture.team_a} logo`} />
+                <div>{fixture.team_a}</div>
+              </TeamContainer>
+              <MatchInfo>
+                <div>{fixture.venue}</div>
+                <div>{new Date(fixture.date).toLocaleString()}</div>
+              </MatchInfo>
+              <TeamContainer>
+                <Logo src={fixture.team_h_logo} alt={`${fixture.team_h} logo`} />
+                <div>{fixture.team_h}</div>
+              </TeamContainer>
+            </MatchContainer>
           </FixtureItem>
         ))}
       </ul>
@@ -44,30 +62,35 @@ export default PlFixtures;
 const FixturesContainer = styled.div`
   padding: 20px;
   border: 1px solid #ccc;
-  box-shadow: 0 4px 10px rgba(0, 128, 0, 0.5); /* Green shadow */
+  box-shadow: 0 4px 10px rgba(0, 128, 0, 0.5);
   border-radius: 8px;
   background-color: #f9f9f9;
-
-  @media (max-width: 768px) {
-    padding: 15px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 10px;
-  }
 `;
 
 const FixtureItem = styled.li`
-  margin: 10px 0;
-  font-size: 18px;
+  margin: 20px 0;
+  list-style-type: none;
+`;
 
-  @media (max-width: 768px) {
-    font-size: 16px;
-  }
+const MatchContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
 
-  @media (max-width: 480px) {
-    font-size: 14px;
-  }
+const TeamContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Logo = styled.img`
+  width: 50px;
+  height: auto;
+  margin-right: 10px;
+`;
+
+const MatchInfo = styled.div`
+  text-align: center;
 `;
 
 const ErrorMessage = styled.div`

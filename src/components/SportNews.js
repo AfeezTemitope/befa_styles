@@ -1,34 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-
-const apiKey = process.env.REACT_APP_NEWS_API; 
-
+console.log(process.env)
 
 const SportNews = () => {
   const [newsArticles, setNewsArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [visibleCount, setVisibleCount] = useState(6); 
+  const [visibleCount, setVisibleCount] = useState(6);
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get('https://newsapi.org/v2/everything', {
-          params: {
-            q: 'Nigeria League',
-            language: 'en',
-            sortBy: 'publishedAt',
-            apiKey: apiKey,
-            pageSize: 100, 
-          },
-        });
-
-        if (response.data.articles) {
-          setNewsArticles(response.data.articles);
-        } else {
-          throw new Error('No results found');
-        }
+        const response = await axios.get('http://localhost:5000/api/sports-news'); 
+        setNewsArticles(response.data);
       } catch (err) {
         console.error('Error fetching news:', err);
         setError(err);
@@ -41,30 +26,29 @@ const SportNews = () => {
   }, []);
 
   const loadMore = () => {
-    setVisibleCount((prevCount) => prevCount + 6); 
+    setVisibleCount((prevCount) => prevCount + 6);
   };
 
   if (loading) return <p>Loading news...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-<div>
-    <StyledHeading>------------- Trending Naija Sports News ------------</StyledHeading>
-    <NewsContainer>
+    <div>
+      <StyledHeading>--- Trending Naija News ---</StyledHeading>
+      <NewsContainer>
         {newsArticles.slice(0, visibleCount).map((article, index) => (
-            <Article key={index}>
-                {article.urlToImage && <Image src={article.urlToImage} alt={article.title} />}
-                <h2>{article.title}</h2>
-                <p>{article.description}</p>
-                <a href={article.url} target="_blank" rel="noopener noreferrer">Read more</a>
-            </Article>
+          <Article key={index}>
+            {article.urlToImage && <Image src={article.urlToImage} alt={article.title} />}
+            <h2>{article.title}</h2>
+            <p>{article.description}</p>
+            <a href={article.url} target="_blank" rel="noopener noreferrer">Read more</a>
+          </Article>
         ))}
-    </NewsContainer>
-    {visibleCount < newsArticles.length && (
+      </NewsContainer>
+      {visibleCount < newsArticles.length && (
         <LoadMoreButton onClick={loadMore}>Load More</LoadMoreButton>
-    )}
-</div>
-
+      )}
+    </div>
   );
 };
 
@@ -124,17 +108,17 @@ const LoadMoreButton = styled.button`
     background-color: #0056b3;
   }
 `;
-const StyledHeading = styled.h3`
-    text-align: center; 
-    width: 70%;
-    margin: 20px auto; 
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #2c3e50; 
-    padding: 10px; 
-    background-color: #ecf0f1; 
-    border-radius: 5px; 
-    box-shadow: 0 2px 5px rgba(0, 128, 0, 0.3);
-`;
 
+const StyledHeading = styled.h3`
+  text-align: center; 
+  width: 50%;
+  margin: 20px auto; 
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2c3e50; 
+  padding: 10px; 
+  background-color: #ecf0f1; 
+  border-radius: 5px; 
+  box-shadow: 0 2px 5px rgba(0, 128, 0, 0.3);
+`;
 
