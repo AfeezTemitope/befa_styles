@@ -5,25 +5,34 @@ const axios = require('axios');
 const app = express();
 
 app.use(cors());
+console.log(process.env)
+const API_KEY = process.env.REACT_APP_PL;
+const API_URL = 'https://api.football-data.org/v4/competitions/PL/standings';
+
+
+app.get('/api/standings', async (req, res) => {
+  try {
+    const response = await axios.get(API_URL, {
+      headers: { 'X-Auth-Token': API_KEY },
+    });
+    res.json(response.data.matches);
+  } catch (error) {
+    console.error('Error fetching matches:', error);
+    res.status(500).json({ error: 'Error fetching matches' });
+  }
+});
 
 app.get('/api/fixtures', async (req, res) => {
   try {
     const response = await axios.get('https://fantasy.premierleague.com/api/fixtures/');
-    const fixtures = response.data.map(fixture => ({
-      id: fixture.id,
-      team_a: fixture.team_a,
-      team_a_logo: `https://resources.premierleague.com/premierleague/logos/${fixture.team_a}.png`, 
-      team_h: fixture.team_h,
-      team_h_logo: `https://resources.premierleague.com/premierleague/logos/${fixture.team_h}.png`, 
-      venue: fixture.venue || 'Unknown Venue', 
-      date: fixture.date,
-    }));
+    const fixtures = response.data; 
+    console.log('Fetched fixtures:', fixtures);
     res.json(fixtures);
   } catch (error) {
+    console.error('Error fetching fixtures:', error);
     res.status(500).json({ message: 'Error fetching fixtures' });
   }
 });
-
 app.get('/api/sports-news', async (req, res) => {
   const apiKey = process.env.REACT_APP_NEWS_API;
   

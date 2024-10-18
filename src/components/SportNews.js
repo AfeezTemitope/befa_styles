@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-console.log(process.env)
 
 const SportNews = () => {
   const [newsArticles, setNewsArticles] = useState([]);
@@ -34,7 +33,7 @@ const SportNews = () => {
 
   return (
     <div>
-      <StyledHeading>--- Trending Naija News ---</StyledHeading>
+      <StyledHeading> -Trending Naija News- </StyledHeading>
       <NewsContainer>
         {newsArticles.slice(0, visibleCount).map((article, index) => (
           <Article key={index}>
@@ -46,7 +45,9 @@ const SportNews = () => {
         ))}
       </NewsContainer>
       {visibleCount < newsArticles.length && (
-        <LoadMoreButton onClick={loadMore}>Load More</LoadMoreButton>
+        <CenteringContainer>
+          <LoadMoreButton onClick={loadMore}>Load More</LoadMoreButton>
+        </CenteringContainer>
       )}
     </div>
   );
@@ -95,7 +96,6 @@ const Image = styled.img`
 `;
 
 const LoadMoreButton = styled.button`
-  margin: 20px auto;
   padding: 10px 20px;
   background-color: #007bff;
   color: white;
@@ -109,9 +109,15 @@ const LoadMoreButton = styled.button`
   }
 `;
 
+const CenteringContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 20px 0; 
+`;
+
 const StyledHeading = styled.h3`
   text-align: center; 
-  width: 50%;
+  width: 20%;
   margin: 20px auto; 
   font-size: 1.5rem;
   font-weight: bold;
@@ -121,4 +127,3 @@ const StyledHeading = styled.h3`
   border-radius: 5px; 
   box-shadow: 0 2px 5px rgba(0, 128, 0, 0.3);
 `;
-
